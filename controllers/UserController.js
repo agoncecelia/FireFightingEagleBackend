@@ -47,7 +47,7 @@ module.exports = {
 
 	                res.json({
 	                    success: true,
-	                    token: token,
+	                    token: 'JWT ' + token,
 	                    user: {
 	                        id: user._id,
 	                        departmentName: user.departmentName,
@@ -65,15 +65,6 @@ module.exports = {
 		res.json({user: req.user});
 	},
 	isAuthenticated: function(req, res) {
-		if(req.user) {
-			res.json({
-				success: true,
-				user: req.user
-			})
-		} else {
-			res.json({
-				success: false
-			})
-		}
+		res.json({user: req.user});
 	}
 }
