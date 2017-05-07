@@ -10,6 +10,8 @@ router.post('/register', UserController.register);
 
 router.post('/authenticate', UserController.authenticate);
 
+router.post('/isAuthenticated', passport.authenticate('jwt', {session: false}), UserController.isAuthenticated);
+
 router.get('/profile', passport.authenticate('jwt', {session: false}), UserController.profile);
 
 module.exports = router;

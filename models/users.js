@@ -1,12 +1,15 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
+var GeoJSON = require('mongoose-geojson-schema');
 
 
 var UserSchema = mongoose.Schema({
-    name: {
+    departmentName: {
         type: String,
         required: true
     },
+    servingArea: mongoose.Schema.Types.Polygon,
+    deparmentLocation: mongoose.Schema.Types.Point,
     email: {
         type: String,
         required: true
@@ -18,6 +21,9 @@ var UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    role: {
+        type: String,
     }
 });
 

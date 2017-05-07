@@ -6,10 +6,13 @@ var config = require('../config/database');
 module.exports = {
 	register: function (req, res) {
 		var newUser = new User({
-	        name: req.body.name,
+	        departmentName: req.body.departmentName,
 	        email: req.body.email,
 	        username: req.body.username,
-	        password: req.body.password
+	        password: req.body.password,
+			servingArea: req.servingArea,
+			departmentLocation: req.departmentLocation,
+			role: req.role
 	    });
 
 	    User.addUser(newUser, (err, user) => {
@@ -17,12 +20,11 @@ module.exports = {
 	            expiresIn: 604800,
 	        });
 
-	        console.log(newUser.token)
 	        if(err) {
 	            res.send({success: false, msg: 'Failed to register user'});
 	            console.log(err);
 	        } else {
-	            res.send({success: true, msg: 'user registered succesfuly', user: newUser, token: newUser.token});
+	            res.send({success: true, msg: 'User registered succesfuly', user: newUser, token: newUser.token});
 	        }
 	    });
 	},
@@ -48,7 +50,7 @@ module.exports = {
 	                    token: token,
 	                    user: {
 	                        id: user._id,
-	                        name: user.name,
+	                        departmentName: user.departmentName,
 	                        username: user.username,
 	                        email: user.email
 	                    }
@@ -61,6 +63,17 @@ module.exports = {
 	},
 	profile: function(req, res){
 		res.json({user: req.user});
+	},
+	isAuthenticated: function(req, res) {
+		if(req.user) {
+			res.json({
+				success: true,
+				user: req.user
+			})
+		} else {
+			res.json({
+				success: false
+			})
+		}
 	}
-
 }
