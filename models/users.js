@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
-var GeoJSON = require('mongoose-geojson-schema');
 
 
 var UserSchema = mongoose.Schema({
@@ -8,8 +7,12 @@ var UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    servingArea: mongoose.Schema.Types.Polygon,
-    deparmentLocation: mongoose.Schema.Types.Point,
+    servingArea: {
+        type: String
+    },
+    departmentLocation: {
+        type: String
+    },
     email: {
         type: String,
         required: true
@@ -39,6 +42,7 @@ module.exports.getUserByUsername = function(username, callback) {
 }
 
 module.exports.addUser = function(newUser, callback) {
+
     bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(newUser.password, salt, function(err, hash) {
             if(err) throw err;

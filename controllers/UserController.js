@@ -10,12 +10,14 @@ module.exports = {
 	        email: req.body.email,
 	        username: req.body.username,
 	        password: req.body.password,
-			servingArea: req.servingArea,
-			departmentLocation: req.departmentLocation,
-			role: req.role
+			servingArea: req.body.servingArea,
+			departmentLocation: req.body.departmentLocation,
+			role: req.body.role
 	    });
 
-	    User.addUser(newUser, (err, user) => {
+		console.log(req.body.departmentLocation)
+	    User.addUser(newUser, (err, newUser) => {
+			
 	        newUser.token = jwt.sign(newUser, config.secret, {
 	            expiresIn: 604800,
 	        });
