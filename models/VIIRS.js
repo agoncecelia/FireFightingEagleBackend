@@ -19,6 +19,5 @@ var VIIRSSchema = mongoose.Schema({
 var VIIRS = module.exports = mongoose.model("VIIRS", VIIRSSchema);
 
 module.exports.saveVIIRSdata = function(newData){ 
-    // console.log(newData)
     newData.save();
 }

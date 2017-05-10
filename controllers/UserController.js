@@ -14,19 +14,17 @@ module.exports = {
 			departmentLocation: req.body.departmentLocation,
 			role: req.body.role
 	    });
-
-		console.log(req.body.departmentLocation)
+		newUser.token = jwt.sign(newUser, config.secret, {
+	        expiresIn: 604800,
+	    });
+		console.log(newUser.token);
 	    User.addUser(newUser, (err, newUser) => {
-			
-	        newUser.token = jwt.sign(newUser, config.secret, {
-	            expiresIn: 604800,
-	        });
 
 	        if(err) {
 	            res.send({success: false, msg: 'Failed to register user'});
 	            console.log(err);
 	        } else {
-	            res.send({success: true, msg: 'User registered succesfuly', user: newUser, token: newUser.token});
+	            res.send({success: true, msg: 'User registered succesfuly', user: newUser});
 	        }
 	    });
 	},
@@ -74,6 +72,18 @@ module.exports = {
 	pendingUsers: function(req, res) {
 		User.getPendingUsers(function(err, result) {
 			res.send(result)
+		})
+	},
+	approveUser: function(req, res) {
+		var id = req.params.id;
+		User.getUserById(id, function(err, result){
+			var user = result;
+			user.active = true;
+			user.save(function(err) {
+				if(err) return next(err);
+			});
+			res.send(200);
+			console.log(user);
 		})
 	}
 }

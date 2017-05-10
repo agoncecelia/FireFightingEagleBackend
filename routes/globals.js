@@ -8,4 +8,5 @@ router.post('/calculate', GlobalController.calculate);
 
 router.post('/receiveLocation', GlobalController.receiveLocation);
 
+
 module.exports = router;
