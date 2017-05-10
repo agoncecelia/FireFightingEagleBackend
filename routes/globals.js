@@ -6,4 +6,6 @@ router.post('/checkdanger', GlobalController.checkdanger);
 
 router.post('/calculate', GlobalController.calculate);
 
+router.post('/receiveLocation', GlobalController.receiveLocation);
+
 module.exports = router;

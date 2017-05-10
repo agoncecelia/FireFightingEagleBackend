@@ -45,26 +45,6 @@ app.use('/api/users', users);
 app.use('/api/satellite', satellite);
 
 
-// setTimeout(function(){
-// 	var filename = "data/fires.csv";
-
-// 	var file = fs.createWriteStream(filename);
-
-// 	var stream = request(csvUrl).pipe(file);
-
-// 	stream.on('finish', function () { 
-// 		var obj = {
-// 	    	filename: filename
-// 		}
-		
-// 		var callback = function(err, json) {
-// 			return
-// 		};
-
-// 		csv.parse(obj, callback)
-// 	});
-// }, 60000);
-
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')

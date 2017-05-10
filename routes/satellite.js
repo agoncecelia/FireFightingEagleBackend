@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var Satellite = require('../models/satelliteData');
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var config = require('../config/database');

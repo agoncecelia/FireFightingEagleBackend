@@ -68,5 +68,12 @@ module.exports = {
 	},
 	isAuthenticated: function(req, res) {
 		res.json({user: req.user});
+		return true;
+	},
+
+	pendingUsers: function(req, res) {
+		User.getPendingUsers(function(err, result) {
+			res.send(result)
+		})
 	}
 }

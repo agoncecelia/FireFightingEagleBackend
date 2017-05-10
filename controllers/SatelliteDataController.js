@@ -1,4 +1,5 @@
-var Satellite = require('../models/satelliteData');
+var MODIS = require('../models/MODIS');
+var VIIRS = require('../models/VIIRS');
 var config = require('../config/database');
 var csv = require('csv-to-json');
 var request = require('request');
@@ -9,6 +10,7 @@ var VIIRSurl = "https://firms.modaps.eosdis.nasa.gov/active_fire/viirs/text/VNP1
 
 module.exports = {
     getMODISdata: function(req, res){
+        console.log('modis')
         var filename = "data/MODISdata.csv";
         var file = fs.createWriteStream(filename);
         var stream = request(MODISurl).pipe(file);
@@ -22,7 +24,7 @@ module.exports = {
 
                 for(var i = 0; i < json.length; i++){
 
-                    var newData = new Satellite({
+                    var newData = new MODIS({
                         latitude: json[i].latitude,
                         longitude: json[i].longitude,
                         brightness: json[i].brightness,
@@ -37,18 +39,18 @@ module.exports = {
                         frp: json[i].frp,
                         daynight: json[i].daynight
                     });
-                    Satellite.saveMODISdata(newData);
+                    MODIS.saveMODISdata(newData);
                 }
-                
                 res.send(200)
             };
             csv.parse(obj, callback)
         });
     },
-    getVIIRSdata: function(req, ers) {
-        var filename = "data/MODISdata.csv";
+    getVIIRSdata: function(req, res) {
+        console.log('viirs')
+        var filename = "data/VIIRSdata.csv";
         var file = fs.createWriteStream(filename);
-        var stream = request(MODISurl).pipe(file);
+        var stream = request(VIIRSurl).pipe(file);
 
         stream.on('finish', function () { 
             var obj = {
@@ -56,33 +58,32 @@ module.exports = {
             }
             
             var callback = function(err, json) {
+                console.log(json[0])
+                for(var i = 0; i < json.length - 1; i++){
 
-                for(var i = 0; i < json.length; i++){
-
-                    var newData = new Satellite({
+                    var newData = new VIIRS({
                         latitude: json[i].latitude,
                         longitude: json[i].longitude,
-                        brightness: json[i].brightness,
+                        bright_ti4: json[i].bright_ti4,
                         scan: json[i].scan,
                         track: json[i].track,
-                        acqDate: json[i].acqDate,
-                        acqTime: json[i].acqTime,
+                        acqDate: json[i].acq_date,
+                        acqTime: json[i].acq_time,
                         satellite: json[i].satellite,
                         confidence: json[i].confidence,
                         version: json[i].version,
-                        brightT31: json[i].brightT31,
+                        bright_ti5: json[i].bright_ti5,
                         frp: json[i].frp,
                         daynight: json[i].daynight
                     });
-                    Satellite.saveVIIRSdata(newData);
+
+                    VIIRS.saveVIIRSdata(newData);
                 }
-                
                 res.send(200)
             };
 
             csv.parse(obj, callback)
         });
     }
-
 }
 

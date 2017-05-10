@@ -27,6 +27,10 @@ var UserSchema = mongoose.Schema({
     },
     role: {
         type: String,
+    },
+    active: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -34,6 +38,10 @@ var User = module.exports = mongoose.model('User', UserSchema);
 
 module.exports.getUserById = function(id, callback) {
     User.findById(id, callback);
+}
+
+module.exports.getPendingUsers = function(callback) {
+    User.find({active: false}, callback);
 }
 
 module.exports.getUserByUsername = function(username, callback) {

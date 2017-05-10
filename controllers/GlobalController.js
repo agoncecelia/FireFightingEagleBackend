@@ -1,4 +1,5 @@
 var User = require('../models/users');
+var UserController = require('../controllers/UserController.js');
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var config = require('../config/database');
@@ -104,5 +105,20 @@ module.exports = {
 				riskSum: riskSum
 			});
 		}
-	}
+	},
+	receiveLocation: function(req, res) {
+		var body = req.body;
+		var userLocation = {
+			gcmToken: body.gcmToken,
+			deviceIMEI: body.deviceIMEI,
+			geoLocation: body.geoLocation,
+			timeStamp: body.timeStamp 
+		};
+		
+		res.send({
+			userLocation: userLocation,
+			success: true,
+			msg: "location received",
+		});
+	},
 }
