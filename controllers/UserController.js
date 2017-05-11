@@ -51,8 +51,12 @@ module.exports = {
 	                    user: {
 	                        id: user._id,
 	                        departmentName: user.departmentName,
+							departmentLocation: user.departmentLocation,
+							servingArea: user.servingArea,
 	                        username: user.username,
-	                        email: user.email
+	                        email: user.email,
+							role: user.role,
+							active: user.active
 	                    }
 	                });
 	            } else {
@@ -65,7 +69,16 @@ module.exports = {
 		res.json({user: req.user});
 	},
 	isAuthenticated: function(req, res) {
-		res.json({user: req.user});
+		res.json({user: {
+	                        id: req.user._id,
+	                        departmentName: req.user.departmentName,
+							departmentLocation: req.user.departmentLocation,
+							servingArea: req.user.servingArea,
+	                        username: req.user.username,
+	                        email: req.user.email,
+							role: req.user.role,
+							active: req.user.active
+	                    }});
 		return true;
 	},
 
@@ -80,7 +93,7 @@ module.exports = {
 			var user = result;
 			user.active = true;
 			user.save(function(err) {
-				if(err) return next(err);
+				if(err) return err;
 			});
 			res.send(200);
 			console.log(user);

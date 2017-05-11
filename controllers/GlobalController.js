@@ -116,9 +116,23 @@ module.exports = {
 		};
 		
 		res.send({
-			userLocation: userLocation,
 			success: true,
 			msg: "location received",
 		});
 	},
+
+	reportFire: function(req, res) {
+		var body = req.body;
+		var fireLocation = {
+			gcmToken: body.gcmToken,
+			deviceIMEI: body.deviceIMEI,
+			geoLocation: body.geoLocation,
+			timeStamp: body.timeStamp 
+		};
+		
+		res.send({
+			success: true,
+			msg: "fire location received",
+		});
+	}
 }

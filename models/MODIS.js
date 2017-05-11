@@ -13,11 +13,32 @@ var MODISSchema = mongoose.Schema({
     version: String,
     brightT31: Number,
     frp: Number,
-    daynight: String
+    daynight: String,
+    location: {
+        type: { type: String },
+        coordinates: [Number]
+    }
 });
 
+MODISSchema.index({location: '2dsphere'});
 var MODIS = module.exports = mongoose.model("MODIS", MODISSchema);
 
 module.exports.saveMODISdata = function(newData) {
     newData.save();
 }
+
+module.exports.getNearbyFires = function(req, callback) {
+    MODIS.find({
+        'location': {
+            $near: {
+                $geometry: {
+                    "type": "Point",
+                    "coordinates": [req.body.latitude, req.body.longitude]
+                },
+                $maxDistance: req.body.distance
+            }
+        }
+    }, callback);
+}
+
+// module.exports.getMODISdata = function()

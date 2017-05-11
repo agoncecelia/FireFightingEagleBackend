@@ -14,6 +14,7 @@ router.get('/profile', passport.authenticate('jwt', {session: false}), UserContr
 
 router.get('/pendingUsers', passport.authenticate('jwt', {session: false}), UserController.pendingUsers);
 
-router.post('/approveUser/:id', UserController.approveUser);
+router.post('/approveUser/:id', passport.authenticate('jwt', {session: false}), UserController.approveUser);
+
 
 module.exports = router;

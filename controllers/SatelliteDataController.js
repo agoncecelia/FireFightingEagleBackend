@@ -37,7 +37,11 @@ module.exports = {
                         version: json[i].version,
                         brightT31: json[i].brightT31,
                         frp: json[i].frp,
-                        daynight: json[i].daynight
+                        daynight: json[i].daynight,
+                        location: {
+                            type: "Point",
+                            coordinates: [json[i].latitude, json[i].longitude]
+                        }
                     });
                     MODIS.saveMODISdata(newData);
                 }
@@ -84,6 +88,14 @@ module.exports = {
 
             csv.parse(obj, callback)
         });
+    },
+    getNearbyFires: function(req, res) {
+        console.log(req.body);
+        MODIS.getNearbyFires(req, function(err, result) {
+            if (err) return;
+            console.log(result.length);
+            res.send(result);
+        })
     }
 }
 
