@@ -13,11 +13,31 @@ var VIIRSSchema = mongoose.Schema({
     version: String,
     bright_ti5: Number,
     frp: Number,
-    daynight: String
+    daynight: String,
+    location: {
+        type: {type: String},
+        coordinates: [Number]
+    }
 });
+
+VIIRSSchema.index({location: '2dsphere'});
 
 var VIIRS = module.exports = mongoose.model("VIIRS", VIIRSSchema);
 
 module.exports.saveVIIRSdata = function(newData){ 
     newData.save();
+}
+
+module.exports.getNearbyFires = function(req, callback) {
+    VIIRS.find({
+        'location': {
+            $near: {
+                $geometry: {
+                    "type": "Point",
+                    "coordinates": [req.body.latitude, req.body.longitude]
+                },
+                $maxDistance: req.body.distance
+            }
+        }
+    }, callback);
 }

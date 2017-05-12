@@ -7,7 +7,9 @@ var SatelliteController = require('../controllers/SatelliteDataController');
 
 router.get('/getMODISdata', SatelliteController.getMODISdata);
 router.get('/getVIIRSdata', SatelliteController.getVIIRSdata);
-router.post('/getNearbyFires', SatelliteController.getNearbyFires);
+router.post('/getNearbyMODISFires', SatelliteController.getNearbyMODISFires);
+router.post('/getNearbyVIIRSFires', SatelliteController.getNearbyVIIRSFires);
+
 
 
 module.exports = router;

@@ -78,7 +78,11 @@ module.exports = {
                         version: json[i].version,
                         bright_ti5: json[i].bright_ti5,
                         frp: json[i].frp,
-                        daynight: json[i].daynight
+                        daynight: json[i].daynight,
+                        location: {
+                            type: "Point",
+                            coordinates: [json[i].latitude, json[i].longitude]
+                        }
                     });
 
                     VIIRS.saveVIIRSdata(newData);
@@ -89,11 +93,17 @@ module.exports = {
             csv.parse(obj, callback)
         });
     },
-    getNearbyFires: function(req, res) {
+    getNearbyMODISFires: function(req, res) {
         console.log(req.body);
         MODIS.getNearbyFires(req, function(err, result) {
             if (err) return;
-            console.log(result.length);
+            res.send(result);
+        })
+    },
+    getNearbyVIIRSFires: function(req, res) {
+        console.log(req.body);
+        VIIRS.getNearbyFires(req, function(err, result) {
+            if (err) return;
             res.send(result);
         })
     }
