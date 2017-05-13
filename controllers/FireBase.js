@@ -1,9 +1,8 @@
 var admin = require("firebase-admin");
+var gcm = require('node-gcm');
+var apikeys = require('../config/apikeys');
 
-var serviceAccount = require("../config/fire-fighting-eagle-firebase-adminsdk-4n4kg-cf1d8e64a2.json");
+var sender = new gcm.Sender(apikeys.gcmApi);
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://fire-fighting-eagle.firebaseio.com"
-});
+
 

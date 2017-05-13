@@ -1,22 +1,41 @@
-var UserLocation = require('../models/users');
+var UserLocation = require('../models/userLocation');
 
 module.exports = {
     updateLocation: function(req, res) {
         var body = req.body;
 
-        var newUserLocation = new UserLocation({
-            gcmToken: body.gcmToken,
-            imei: body.imei,
-            location: {
-                type: "Point",
-                coordinates: [body.location.coordinates[0], body.location.coordinates[1]]
+        UserLocation.findOne({"imei": body.imei}, function(err, user){
+            if(user != null){
+                user.location.coordinates = [body.location.coordinates[0], body.location.coordinates[1]];
+
+                user.save();
+                res.send({
+                    msg: "user location updated succesfuly"
+                });
+                
+            }else{
+               var newUserLocation = new UserLocation({
+                    gcmToken: body.gcmToken,
+                    imei: body.imei,
+                    location: {
+                        type: "Point",
+                        coordinates: [body.location.coordinates[0], body.location.coordinates[1]]
+                    }
+                }); 
+
+                newUserLocation.save();
+                res.send({
+                    msg: "user location saved succesfuly"
+                });
             }
         });
+        
+    },
 
-        console.log(newUserLocation);
-        UserLocation.saveUserLocation(newUserLocation);
-        res.send({
-            msg: "user location updated succesfuly"
-        });
-    }
+    nearbyUsers: function(req, res) {
+        UserLocation.getNearbyUsers(req, function(err, result) {
+            if (err) throw err;
+            res.send(result);
+        })
+    },
 }

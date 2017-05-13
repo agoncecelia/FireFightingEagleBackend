@@ -40,5 +40,3 @@ module.exports.getNearbyFires = function(req, callback) {
         }
     }, callback);
 }
-
-// module.exports.getMODISdata = function()

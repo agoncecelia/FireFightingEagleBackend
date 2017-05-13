@@ -15,11 +15,13 @@ module.exports = {
                 type: "Point",
                 coordinates: [body.location.coordinates[0], body.location.coordinates[1]]
             },
-            userReported: true
+            userReported: true,
+            imei: body.imei
         });
         console.log(newFire);
         Fire.saveFireLocation(newFire);
         res.send({
+            status: 200,
             msg: "fire reported succesfuly"
         })
     }

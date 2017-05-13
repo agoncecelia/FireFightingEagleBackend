@@ -43,7 +43,7 @@ module.exports.getUserById = function(id, callback) {
 }
 
 module.exports.getPendingUsers = function(callback) {
-    User.find({active: false}, callback);
+    User.find({active: false}, {password: 0}, callback);
 }
 
 module.exports.getUserByUsername = function(username, callback) {

@@ -12,6 +12,9 @@ var FireSchema = mongoose.Schema({
     userReported: {
         type: Boolean,
         default: false
+    },
+    imei: {
+        type: String,
     }
 });
 

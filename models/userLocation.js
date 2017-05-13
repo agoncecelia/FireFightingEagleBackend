@@ -11,7 +11,8 @@ var UserLocationSchema = mongoose.Schema({
     },
     imei: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     location: {
         type: {type: String},
@@ -22,11 +23,17 @@ var UserLocationSchema = mongoose.Schema({
 var UserLocation = module.exports = mongoose.model('UserLocation', UserLocationSchema);
 UserLocationSchema.index({location: '2dsphere'});
 
-module.exports.saveUserLocation = function(newUserLocation) {
-
-    UserLocation.findOneAndUpdate({imei: newUserLocation.imei}, newUserLocation, {upsert: true}, function(err, doc) {
-        if(err) { throw err; }
-        console.log('updated', doc);
-    })
-
+module.exports.getNearbyUsers = function(req, callback) {
+    console.log(req.body);
+    UserLocation.find({
+        'location': {
+            $near: {
+                $geometry: {
+                    "type": "Point",
+                    "coordinates": [req.body.latitude, req.body.longitude]
+                },
+                $maxDistance: req.body.distance
+            }
+        }
+    }, callback);
 }
