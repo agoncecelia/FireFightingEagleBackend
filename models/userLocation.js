@@ -24,15 +24,14 @@ var UserLocation = module.exports = mongoose.model('UserLocation', UserLocationS
 UserLocationSchema.index({location: '2dsphere'});
 
 module.exports.getNearbyUsers = function(req, callback) {
-    console.log(req.body);
     UserLocation.find({
-        'location': {
+        location: {
             $near: {
                 $geometry: {
                     "type": "Point",
-                    "coordinates": [req.body.latitude, req.body.longitude]
+                    "coordinates": [req.latitude, req.longitude]
                 },
-                $maxDistance: req.body.distance
+                $maxDistance: req.distance
             }
         }
     }, callback);

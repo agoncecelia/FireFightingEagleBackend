@@ -43,6 +43,8 @@ module.exports = {
                             coordinates: [json[i].latitude, json[i].longitude]
                         }
                     });
+
+                    
                     MODIS.saveMODISdata(newData);
                 }
                 res.send(200)

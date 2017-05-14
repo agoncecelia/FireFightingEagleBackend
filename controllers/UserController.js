@@ -17,7 +17,6 @@ module.exports = {
 		newUser.token = jwt.sign(newUser, config.secret, {
 	        expiresIn: 604800,
 	    });
-		console.log(newUser.token);
 	    User.addUser(newUser, (err, newUser) => {
 
 	        if(err) {
@@ -95,8 +94,11 @@ module.exports = {
 			user.save(function(err) {
 				if(err) return err;
 			});
-			res.send(200);
-			console.log(user);
+			res.send({
+				status: 200,
+				msg: 'User approved',
+				success: true
+			});
 		})
 	}
 }

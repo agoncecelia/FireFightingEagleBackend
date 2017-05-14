@@ -7,6 +7,7 @@ module.exports = {
         UserLocation.findOne({"imei": body.imei}, function(err, user){
             if(user != null){
                 user.location.coordinates = [body.location.coordinates[0], body.location.coordinates[1]];
+                user.gcmToken = body.gcmToken;
 
                 user.save();
                 res.send({
@@ -33,7 +34,8 @@ module.exports = {
     },
 
     nearbyUsers: function(req, res) {
-        UserLocation.getNearbyUsers(req, function(err, result) {
+        console.log(req.body)
+        UserLocation.getNearbyUsers(req.body, function(err, result) {
             if (err) throw err;
             res.send(result);
         })
