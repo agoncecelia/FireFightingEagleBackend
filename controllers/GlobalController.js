@@ -4,6 +4,7 @@ var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var config = require('../config/database');
 var csv = require('csv-to-json');
+var fs = require('fs');
 var geolib = require('geolib');
 var csvUrl = "https://firms.modaps.eosdis.nasa.gov/active_fire/c6/text/MODIS_C6_Global_24h.csv";
 
