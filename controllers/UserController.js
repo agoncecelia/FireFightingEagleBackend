@@ -14,16 +14,28 @@ module.exports = {
 			departmentLocation: req.body.departmentLocation,
 			role: req.body.role
 	    });
+
 		newUser.token = jwt.sign(newUser, config.secret, {
 	        expiresIn: 604800,
 	    });
-	    User.addUser(newUser, (err, newUser) => {
+		
+		var user = {
+			departmentName: newUser.departmentName,
+	        email: newUser.email,
+	        username: newUser.username,
+			servingArea: newUser.servingArea,
+			departmentLocation: newUser.departmentLocation,
+			role: newUser.role,
+			token: newUser.token
+		};
 
+	    User.addUser(newUser, (err, newUser) => {
+			delete newUser.password;
 	        if(err) {
 	            res.send({success: false, msg: 'Failed to register user'});
 	            console.log(err);
 	        } else {
-	            res.send({success: true, msg: 'User registered succesfuly', user: newUser});
+	            res.send({success: true, msg: 'User registered succesfuly', user: user});
 	        }
 	    });
 	},

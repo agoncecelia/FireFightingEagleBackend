@@ -8,6 +8,9 @@ var gcm = require('node-gcm');
 var apikeys = require('../config/apikeys');
 var admin = require('firebase-admin');
 var serviceAccount = require('../config/fire-fighting-eagle-firebase-adminsdk-4n4kg-cf1d8e64a2.json');
+var User = require('../models/users');
+var app = require('../app');
+
 
 
 var MODISurl = "https://firms.modaps.eosdis.nasa.gov/active_fire/c6/text/MODIS_C6_Global_24h.csv";
@@ -105,6 +108,35 @@ module.exports = {
                         })
                     }
                 })
+                User.find({
+                    servingArea: {
+                        $geoIntersects: {
+                            $geometry: {
+                            "type": "Point",
+                            "coordinates": fireCoords
+                            }
+                        }
+                    }
+                }, function(err, result) {
+                        if(err){
+                            console.log(err)
+                        }
+                        console.log(result)
+                        // console.log(wsConnections)
+                        if(result.length){
+                            for(var i = 0; i < result.length; i++) {
+                                console.log(result[i]._id)
+                                console.log(app.wsConnections)
+                                
+                                if(app.wsConnections.hasOwnProperty(result[i]._id)) {
+                                    console.log("asdasd")
+                                    app.wsConnections[result[i]._id].send(JSON.stringify({type: 'message', payload: fireCoords}));
+                                    // wsConnections[result[i]._id].send("success");
+                                }
+                            }
+                        }
+                });
+
             }
         })
     }

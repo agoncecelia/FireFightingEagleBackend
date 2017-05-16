@@ -13,6 +13,47 @@ var users = require('./routes/users');
 var globals = require('./routes/globals');
 var satellite = require('./routes/satellite')
 
+var http = require('http');
+var WebSocket = require('ws');
+
+var server = http.createServer(app);
+var wss = new WebSocket.Server({ server });
+var wsConnections = {};
+module.exports.wsConnections = wsConnections;
+
+wss.on('connection', function connection(ws) {
+  console.log('someone connected')
+  // console.log(ws);
+  // var location = url.parse(ws.upgradeReq.url, true);
+  // You might use location.query.access_token to authenticate or share sessions 
+  // or ws.upgradeReq.headers.cookie (see http://stackoverflow.com/a/16395220/151312) 
+  var userKey;
+ 
+  ws.on('message', function incoming(message) {
+    console.log('received: %s', message);
+    try{
+      var payload = JSON.parse(message);
+      if(payload.hasOwnProperty("type") && payload.hasOwnProperty("id")){
+        if(payload.type == "init"){
+          userKey = payload.id;
+          wsConnections[userKey] = ws;
+        }
+      }
+    }catch(err){
+      console.log(err);
+    }
+  });
+
+  ws.on('close', function () {
+    console.log(wsConnections)
+    if(wsConnections.hasOwnProperty(userKey)){
+      delete wsConnections[userKey];
+    }
+  });
+ 
+  // ws.send('something');
+});
+
 mongoose.connect(config.database);
 mongoose.connection.on('connected', function() {
 	console.log('connected to db ' + config.database);
@@ -46,6 +87,10 @@ app.use('/api/satellite', satellite);
 
 
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+// app.listen(3000, function () {
+//   console.log('Example app listening on port 3000!')
+// })
+
+server.listen(3000, function () {
+  console.log('Example app listening on port', server.address().port)
 })

@@ -9,10 +9,12 @@ var UserSchema = mongoose.Schema({
         required: true
     },
     servingArea: {
-        type: String
+        type: { type : String },
+        coordinates: [[[Number]]]
     },
     departmentLocation: {
-        type: String
+        type: { type: String },
+        coordinates: [Number]
     },
     email: {
         type: String,

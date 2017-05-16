@@ -4,7 +4,7 @@ var GlobalController = require('../controllers/GlobalController');
 var FireController = require('../controllers/FireController');
 var UserLocationController = require('../controllers/UserLocationController');
 
-router.post('/checkdanger', GlobalController.checkdanger);
+router.get('/getActiveFires', GlobalController.getActiveFires);
 
 router.post('/calculate', GlobalController.calculate);
 

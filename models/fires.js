@@ -21,10 +21,6 @@ var FireSchema = mongoose.Schema({
 var Fire = module.exports = mongoose.model('Fire', FireSchema);
 FireSchema.index({location: '2dsphere'});
 
-
-// Not Working1
-// FireSchema.index({"date": 1}, {expireAfterSeconds: 5});
-
 module.exports.saveFireLocation = function(newData) {
     console.log(newData);
     newData.save();

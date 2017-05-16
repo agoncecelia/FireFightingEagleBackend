@@ -1,5 +1,9 @@
 var User = require('../models/users');
 var UserController = require('../controllers/UserController.js');
+
+var modis = require('../models/MODIS');
+var viirs = require('../models/VIIRS');
+
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var config = require('../config/database');
@@ -9,49 +13,37 @@ var geolib = require('geolib');
 var csvUrl = "https://firms.modaps.eosdis.nasa.gov/active_fire/c6/text/MODIS_C6_Global_24h.csv";
 
 module.exports = {
-	checkdanger: function(req, res) {
-		var body = req.body;
-		var lat = body.lat;
-		var lng = body.lng;
+	getActiveFires: function(req, res) {
+		
+		var coordinates = [];
 
-		var filename = "data/fires.csv";
-
-		fs.readFile(filename, 'utf8', function (err,data) {
-			if (err) {
-				return console.log(err);
+		modis.find({},function(err, result) {
+			if(err){
+				console.log(err);
+				return;
 			}
 
-		  	var obj = {
-		    	filename: filename
+			for(var i = 0 ; i < result.length; i++) {
+				coordinates.push({latitude: result[i].latitude, longitude: result[i].longitude});
 			}
-
-			csv.parse(obj, function(err, json){
-				for(var i = 0; i < json.length; i++){
-					var flat = parseFloat(json[i].latitude);
-					var flng = parseFloat(json[i].longitude);
-					var fradius = parseInt(json[i].scan * 1000);
-
-					if(json[i].latitude && json[i].longitude){
-						var isInside = geolib.isPointInCircle({latitude: parseFloat(lat), longitude: parseFloat(lng)}, {latitude: flat, longitude: flng}, fradius);
-						if(isInside){
-							return res.send({
-				    			success: true,
-				    			msg: "You are in danger zone",
-				    			radius: fradius,
-				    			latitude: flat,
-				    			longitude: flng
-				    		});
-						}
-					}
-	    		}
-
-	    		return res.send({
-	    			success: false,
-	    			msg: "You are safe",
-					fires: json
-	    		});
+			
+			viirs.find({},function(verr, vresult){
+				if(err){
+					console.log(verr);
+					return;
+				}
+				for(var i = 0 ; i < result.length; i++) {
+					coordinates.push({latitude: vresult[i].latitude, longitude: vresult[i].longitude});
+				}
+				console.log(coordinates.length)
+				res.send(coordinates);
 			})
 		});
+
+		
+
+		// console.log(coordinates);
+		
 	},
 	calculate: function(req, res){
 		var body = req.body;
