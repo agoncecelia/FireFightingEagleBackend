@@ -15,6 +15,10 @@ var FireSchema = mongoose.Schema({
     },
     imei: {
         type: String,
+    },
+    sos: {
+        type: Boolean,
+        default: false
     }
 });
 

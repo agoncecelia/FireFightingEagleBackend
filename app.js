@@ -23,10 +23,7 @@ module.exports.wsConnections = wsConnections;
 
 wss.on('connection', function connection(ws) {
   console.log('someone connected')
-  // console.log(ws);
-  // var location = url.parse(ws.upgradeReq.url, true);
-  // You might use location.query.access_token to authenticate or share sessions 
-  // or ws.upgradeReq.headers.cookie (see http://stackoverflow.com/a/16395220/151312) 
+
   var userKey;
  
   ws.on('message', function incoming(message) {
@@ -50,8 +47,6 @@ wss.on('connection', function connection(ws) {
       delete wsConnections[userKey];
     }
   });
- 
-  // ws.send('something');
 });
 
 mongoose.connect(config.database);
@@ -85,11 +80,6 @@ app.use('/api/users', users);
 
 app.use('/api/satellite', satellite);
 
-
-
-// app.listen(3000, function () {
-//   console.log('Example app listening on port 3000!')
-// })
 
 server.listen(3000, function () {
   console.log('Example app listening on port', server.address().port)

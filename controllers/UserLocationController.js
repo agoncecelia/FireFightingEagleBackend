@@ -11,7 +11,7 @@ module.exports = {
 
                 user.save();
                 res.send({
-                    msg: "user location updated succesfuly"
+                    msg: "user location updated succesfully"
                 });
                 
             }else{
@@ -26,11 +26,32 @@ module.exports = {
 
                 newUserLocation.save();
                 res.send({
-                    msg: "user location saved succesfuly"
+                    msg: "user location saved succesfully"
                 });
             }
         });
         
+    },
+
+    markSafe: function(req, res) {
+        var body = req.body;
+
+        UserLocation.findOne({"imei": body.imei}, function(err, user) {
+            if(user != null) {
+                console.log(user);
+                user.inDanger = false;
+                user.save();
+                res.send({
+                    success: true,
+                    msg: "user marked safe succesfully"
+                });
+            } else {
+                res.send({
+                    success: false,
+                    msg: "no user found"
+                });
+            }
+        });
     },
 
     nearbyUsers: function(req, res) {

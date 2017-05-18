@@ -17,6 +17,10 @@ var UserLocationSchema = mongoose.Schema({
     location: {
         type: {type: String},
         coordinates: [Number]
+    },
+    inDanger: {
+        type: Boolean,
+        default: false
     }
 });
 

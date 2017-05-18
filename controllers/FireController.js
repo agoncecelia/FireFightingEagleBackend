@@ -56,7 +56,8 @@ module.exports = {
                         coordinates: fireCoords
                     },
                     userReported: true,
-                    imei: body.imei
+                    imei: body.imei,
+                    sos: body.sos                    
                 });
                 
                 var searchData = {
@@ -72,8 +73,11 @@ module.exports = {
                         var registrationTokens = [];
                         for(var i = 0; i < result.length; i++){
                             registrationTokens.push(result[i].gcmToken);
+                            console.log(result[i])
+                            result[i].inDanger = true;
+                            result[i].save();
                         }
-
+                        
                         var payload =  {
                             notification: {
                                 title: "Fire alarm reported",
@@ -95,7 +99,7 @@ module.exports = {
 
                             res.send({
                                 status: 200,
-                                msg: "fire reported and user notified succesfuly"
+                                msg: "fire reported and user notified succesfully"
                             })
                         })
                         .catch(function(error) {
@@ -104,7 +108,7 @@ module.exports = {
                     } else {
                         res.send({
                             status: 200,
-                            msg: "fire reported successfuly, no users in area"
+                            msg: "fire reported successfully, no users in area"
                         })
                     }
                 })
@@ -121,17 +125,13 @@ module.exports = {
                         if(err){
                             console.log(err)
                         }
-                        console.log(result)
-                        // console.log(wsConnections)
                         if(result.length){
                             for(var i = 0; i < result.length; i++) {
                                 console.log(result[i]._id)
                                 console.log(app.wsConnections)
                                 
                                 if(app.wsConnections.hasOwnProperty(result[i]._id)) {
-                                    console.log("asdasd")
                                     app.wsConnections[result[i]._id].send(JSON.stringify({type: 'message', payload: fireCoords}));
-                                    // wsConnections[result[i]._id].send("success");
                                 }
                             }
                         }

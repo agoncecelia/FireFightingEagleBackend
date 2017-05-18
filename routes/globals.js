@@ -16,5 +16,7 @@ router.put('/updateLocation', UserLocationController.updateLocation);
 
 router.post('/nearbyUsers', UserLocationController.nearbyUsers);
 
+router.put('/markSafe', UserLocationController.markSafe);
+
 
 module.exports = router;
