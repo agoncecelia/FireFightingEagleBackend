@@ -21,6 +21,8 @@ var wss = new WebSocket.Server({ server });
 var wsConnections = {};
 module.exports.wsConnections = wsConnections;
 
+var port = process.env.PORT || 3000;
+
 wss.on('connection', function connection(ws) {
   console.log('someone connected')
 
@@ -81,6 +83,6 @@ app.use('/api/users', users);
 app.use('/api/satellite', satellite);
 
 
-server.listen(3000, function () {
-  console.log('Example app listening on port', server.address().port)
+server.listen(port, function () {
+  console.log('Server listening on ', server.address().port)
 })
