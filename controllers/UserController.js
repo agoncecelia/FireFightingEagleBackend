@@ -30,7 +30,6 @@ module.exports = {
 		};
 
 	    User.addUser(newUser, (err, newUser) => {
-			delete newUser.password;
 	        if(err) {
 	            res.send({success: false, msg: 'Failed to register user'});
 	            console.log(err);

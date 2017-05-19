@@ -6,9 +6,7 @@ var UserLocationController = require('../controllers/UserLocationController');
 
 router.get('/getActiveFires', GlobalController.getActiveFires);
 
-router.post('/calculate', GlobalController.calculate);
-
-router.post('/receiveLocation', GlobalController.receiveLocation);
+router.get('/calculate/:lat/:lon', GlobalController.calculate);
 
 router.post('/reportFire', FireController.reportFire);
 

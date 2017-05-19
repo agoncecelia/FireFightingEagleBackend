@@ -16,6 +16,7 @@
     "csvtojson": "^1.1.4",
     "express": "^4.15.2",
     "firebase-admin": "^4.2.1",
+    "forecast": "^0.3.2",
     "geolib": "^2.0.22",
     "jsonwebtoken": "^7.4.0",
     "mongoose": "^4.9.6",
