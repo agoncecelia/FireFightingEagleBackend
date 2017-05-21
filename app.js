@@ -22,8 +22,7 @@ var wsConnections = {};
 module.exports.wsConnections = wsConnections;
 
 var port = process.env.PORT || 3000;
-var dbUri = process.env.MONGOLAB_URI || config.database;
-
+var dbURI;
 wss.on('connection', function connection(ws) {
   console.log('someone connected')
 
@@ -52,9 +51,14 @@ wss.on('connection', function connection(ws) {
   });
 });
 
-mongoose.connect(dbUri);
+if(process.env.NODE_ENV === 'production') {
+  dbURI = config.mongolab;
+}
+dbURI = config.database;
+
+mongoose.connect(dbURI);
 mongoose.connection.on('connected', function() {
-	console.log('connected to db ' + dbUri);
+	console.log('connected to db ' + dbURI);
 });
 
 mongoose.connection.on('error', function(err) {
